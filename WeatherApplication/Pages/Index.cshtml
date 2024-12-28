@@ -1,0 +1,30 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Прогноз погоды";
+}
+
+<h1>Прогноз погоды</h1>
+
+<form method="get">
+    <label for="city">Введите название города:</label>
+    <input type="text" id="city" name="city" />
+    <button type="submit">Поиск</button>
+</form>
+
+@if (Model.WeatherData != null)
+{
+    <h2>Погода в городе @Model.WeatherData.Name</h2>
+    <p>Температура: @Model.WeatherData.Main.Temp °C</p>
+    <p>Ощущается как: @Model.WeatherData.Main.Feels_Like °C</p>
+    <p>Состояние: @Model.WeatherData.Weather[0].Description</p>
+
+    <!-- Отображение иконки погоды -->
+    <div icon="@Model.GetWeatherIcon(Model.WeatherData.Weather[0].Description)" data-label="@Model.WeatherData.Weather[0].Description">
+        <!-- Иконка будет стилизована с помощью CSS на основе класса (солнечно, облачно и т.д.) -->
+    </div>
+}
+else if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <p style="color:red;">@Model.ErrorMessage</p>
+}
