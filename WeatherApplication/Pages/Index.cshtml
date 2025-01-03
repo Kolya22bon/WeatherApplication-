@@ -14,15 +14,24 @@
 
 @if (Model.WeatherData != null)
 {
-    <h2>Погода в городе @Model.WeatherData.Name</h2>
-    <p>Температура: @Model.WeatherData.Main.Temp °C</p>
-    <p>Ощущается как: @Model.WeatherData.Main.Feels_Like °C</p>
-    <p>Состояние: @Model.WeatherData.Weather[0].Description</p>
 
-    <!-- Отображение иконки погоды -->
-    <div icon="@Model.GetWeatherIcon(Model.WeatherData.Weather[0].Description)" data-label="@Model.WeatherData.Weather[0].Description">
-        <!-- Иконка будет стилизована с помощью CSS на основе класса (солнечно, облачно и т.д.) -->
-    </div>
+    <h2>Погода в городе @Model.WeatherData.Name</h2>
+
+    @if (Model.WeatherData.ForecastList != null)
+    {
+        <h2>Прогноз на сегодня, завтра и послезавтра:</h2>
+        <div style="display: flex; gap: 20px; justify-content: center;">
+            @foreach (var forecast in Model.WeatherData.ForecastList.Where(f => f.Dt_Txt.Contains("12:00:00")).Take(3))
+            {
+                <div style="flex: 1; text-align: center; background: rgba(0, 0, 0, 0.5); padding: 29px; border-radius: 10px;">
+                    <p>Дата: @forecast.Dt_Txt</p>
+                    <p>Температура: @forecast.Main.Temp °C</p>
+                    <p>Состояние: @forecast.Weather[0].Description</p>
+                    <div icon="@Model.GetWeatherIcon(forecast.Weather[0].Description)" data-label="@forecast.Weather[0].Description"></div>
+                </div>
+            }
+        </div>
+    }
 }
 else if (!string.IsNullOrEmpty(Model.ErrorMessage))
 {

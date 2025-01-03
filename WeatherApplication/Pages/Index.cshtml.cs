@@ -14,32 +14,32 @@ public class IndexModel : PageModel
     public WeatherResponse WeatherData { get; private set; }
     public string ErrorMessage { get; private set; }
 
-    // Method to get the appropriate weather icon based on the description
+    // Метод для получения подходящей иконки погоды на основе описания
     public string GetWeatherIcon(string description)
     {
-        if (description.Contains("clear"))
+        if (description.Contains("clear", StringComparison.OrdinalIgnoreCase))
         {
             return "sunny";
         }
-        else if (description.Contains("cloud"))
+        else if (description.Contains("cloud", StringComparison.OrdinalIgnoreCase))
         {
             return "cloudy";
         }
-        else if (description.Contains("snow"))
+        else if (description.Contains("snow", StringComparison.OrdinalIgnoreCase))
         {
             return "snowy";
         }
-        else if (description.Contains("storm"))
+        else if (description.Contains("storm", StringComparison.OrdinalIgnoreCase))
         {
             return "stormy";
         }
-        else if (description.Contains("moon"))
+        else if (description.Contains("moon", StringComparison.OrdinalIgnoreCase))
         {
             return "supermoon";
         }
         else
         {
-            return "sunny"; // default icon
+            return "sunny"; // Иконка по умолчанию
         }
     }
 
@@ -49,7 +49,12 @@ public class IndexModel : PageModel
         {
             try
             {
+                // Получаем текущую погоду
                 WeatherData = await _weatherService.GetWeatherAsync(city);
+
+                // Получаем прогноз и добавляем его в WeatherData
+                var forecastData = await _weatherService.GetForecastAsync(city);
+                WeatherData.ForecastList = forecastData.ForecastList;
             }
             catch (Exception ex)
             {

@@ -3,6 +3,9 @@
     public Main Main { get; set; }
     public Weather[] Weather { get; set; }
     public string Name { get; set; }
+
+    // Добавлено: список прогнозов погоды
+    public List<ForecastItem> ForecastList { get; set; }
 }
 
 public class Main
@@ -19,4 +22,9 @@ public class Weather
     public string Icon { get; set; }
 }
 
-
+public class ForecastItem
+{
+    public Main Main { get; set; }
+    public Weather[] Weather { get; set; }
+    public string Dt_Txt { get; set; } // Дата и время прогноза
+}

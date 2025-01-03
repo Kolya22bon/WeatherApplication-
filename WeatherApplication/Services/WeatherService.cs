@@ -13,6 +13,7 @@ public class WeatherService
         _httpClient = httpClient;
     }
 
+    // Получение текущей погоды
     public async Task<WeatherResponse> GetWeatherAsync(string city)
     {
         var url = $"{BaseUrl}weather?q={city}&units=metric&appid={ApiKey}";
@@ -27,6 +28,32 @@ public class WeatherService
         return JsonConvert.DeserializeObject<WeatherResponse>(content);
     }
 
-    
+    // Получение прогноза
+    public async Task<WeatherResponse> GetForecastAsync(string city)
+    {
+        var url = $"{BaseUrl}forecast?q={city}&units=metric&appid={ApiKey}";
+        var response = await _httpClient.GetAsync(url);
 
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new HttpRequestException("Failed to fetch forecast data.");
+        }
+
+        var content = await response.Content.ReadAsStringAsync();
+
+        // Возвращаем объект с прогнозами
+        var forecastResponse = JsonConvert.DeserializeObject<ForecastResponse>(content);
+
+        return new WeatherResponse
+        {
+            Name = city,
+            ForecastList = forecastResponse.List
+        };
+    }
+
+    // Временный класс для десериализации ответа прогноза
+    private class ForecastResponse
+    {
+        public List<ForecastItem> List { get; set; }
+    }
 }
