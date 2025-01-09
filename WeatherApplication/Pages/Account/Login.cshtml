@@ -1,0 +1,28 @@
+﻿@page
+@model WeatherApplication.Pages.Account.LoginModel
+@{
+    ViewData["Title"] = "Вход";
+}
+
+<h1>Вход</h1>
+
+<form method="post">
+    <div>
+        <label for="Username">Имя пользователя</label>
+        <input id="Username" name="Username" type="text" asp-for="Input.Username" />
+        <span asp-validation-for="Input.Username"></span>
+    </div>
+    <div>
+        <label for="Email">Электронная почта</label>
+        <input id="Email" name="Email" type="email" asp-for="Input.Email" />
+        <span asp-validation-for="Input.Email"></span>
+    </div>
+    <div>
+        <label for="Password">Пароль</label>
+        <input id="Password" name="Password" type="password" asp-for="Input.Password" />
+        <span asp-validation-for="Input.Password"></span>
+    </div>
+    <button type="submit">Войти</button>
+</form>
+
+<p>Нет аккаунта? <a href="/Account/Register">Зарегистрироваться</a></p>

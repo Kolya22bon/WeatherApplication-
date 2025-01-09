@@ -12,9 +12,21 @@
     <button type="submit">Поиск</button>
 </form>
 
+<!-- Меню для выбора дождя -->
+<h3>Есть ли у вас сейчас дождь?</h3>
+<div>
+    <!-- Кнопка "Да" -->
+    <a href="#" id="rainYes" onclick="changeButtonColor('yes')" style="display: inline-block; padding: 20px 30px; background-color: gray; color: white; text-decoration: none; margin-right: 20px; font-size: 18px; text-transform: uppercase; border-radius: 5px;">
+        Да
+    </a>
+    <!-- Кнопка "Нет" -->
+    <a href="#" id="rainNo" onclick="changeButtonColor('no')" style="display: inline-block; padding: 20px 30px; background-color: gray; color: white; text-decoration: none; font-size: 18px; text-transform: uppercase; border-radius: 5px;">
+        Нет
+    </a>
+</div>
+
 @if (Model.WeatherData != null)
 {
-
     <h2>Погода в городе @Model.WeatherData.Name</h2>
 
     @if (Model.WeatherData.ForecastList != null)
@@ -37,3 +49,19 @@ else if (!string.IsNullOrEmpty(Model.ErrorMessage))
 {
     <p style="color:red;">@Model.ErrorMessage</p>
 }
+
+<!-- Скрипт для изменения цвета кнопок -->
+<script>
+    function changeButtonColor(answer) {
+        var yesButton = document.getElementById("rainYes");
+        var noButton = document.getElementById("rainNo");
+
+        if (answer === 'yes') {
+            yesButton.style.backgroundColor = "green"; // Зеленый для "Да"
+            noButton.style.backgroundColor = "gray";  // Серый для "Нет"
+        } else if (answer === 'no') {
+            noButton.style.backgroundColor = "red"; // Красный для "Нет"
+            yesButton.style.backgroundColor = "gray"; // Серый для "Да"
+        }
+    }
+</script>
